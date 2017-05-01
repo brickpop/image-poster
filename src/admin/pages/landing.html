@@ -1,0 +1,25 @@
+<div class="container-fluid">
+	<br/>
+	<br/>
+	<div class="jumbotron">
+		<h1>Image Poster</h1>
+		<p ng-show="loading" class="text-muted">
+			(loading...)
+		</p>
+		<p ng-show="!loading && session._id" class="text-muted">
+			Welcome to the Image Poster intranet.
+			<br/>
+			Refer to the left menu to manage your contents.
+		</p>
+		<p ng-show="!loading && !session._id" class="text-muted">
+			Welcome to the Image Poster intranet.
+			<br/>
+			Login to continue
+		</p>
+		<div class="row" ng-show="!loading && !session._id">
+			<div class="col-sm-8 col-md-6 col-lg-4">
+				<a href="/api/admin/login" class="btn btn-primary btn-lg btn-block">Log in</a>
+			</div>
+		</div>
+	</div>
+</div>

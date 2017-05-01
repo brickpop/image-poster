@@ -1,0 +1,86 @@
+*,
+ ::before,
+ ::after,
+ :before,
+ :after {
+  box-sizing: inherit;
+}
+
+::before,
+ ::after,
+ :before,
+ :after {
+  text-decoration: inherit;
+  vertical-align: inherit;
+}
+
+* {
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  overflow-y: scroll;
+	background-color: black;
+}
+
+body {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  text-rendering: optimizeLegibility;
+	font-family: 'font';
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@media (min-width: 1040px) {
+  body {
+		overflow:hidden;
+		height:100vh;
+  }
+}
+
+
+/*
+	utils
+*/
+
+.full-width {
+  width: 100%;
+}
+
+.txt-pointer{
+	cursor: pointer;
+}
+
+img {
+    image-rendering: optimizeQuality;
+    -ms-interpolation-mode: bicubic;
+    border: 0;
+    vertical-align: middle;
+		image-rendering: -moz-crisp-edges;         /* Firefox */
+		image-rendering:   -o-crisp-edges;         /* Opera */
+		image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+		image-rendering: crisp-edges;
+		-ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+}
+
+.img-responsive {width: auto\9; height: auto; max-width: 100%; }
+
+
+a{
+	text-decoration: none;
+    /*transition: all 0.5s linear;*/
+}
+
+
+
+/*
+
+ layout
+
+*/

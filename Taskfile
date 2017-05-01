@@ -1,0 +1,137 @@
+#!/bin/bash
+PATH=./node_modules/.bin:$PATH
+WEBPACK=./node_modules/.bin/webpack
+
+#############################################
+# GENERIC
+
+function clean {
+  echo "# Cleaning ./build"
+  rm -Rf ./build
+  mkdir -p ./build/admin
+}
+
+function init {
+  clean
+  yarn || npm install
+}
+
+#############################################
+# BUILD
+
+function build {
+  html
+  media
+  fonts
+  vendor-styles
+  webpack release
+}
+
+function html {
+  echo "# Copying HTML files (admin)"
+
+  mkdir -p build/admin
+  cp src/admin/index.html build/admin
+}
+
+function vendor-styles {
+  echo "# Bundling vendor CSS"
+  mkdir -p build/styles
+
+  cat node_modules/ng-admin/build/ng-admin.min.css > build/admin.vendor.css
+}
+
+function media {
+  echo "# Copying media files to build/media"
+  mkdir -p build/media
+  cp -a ./src/web/media/* ./build/media
+}
+
+function fonts {
+  echo "# Copying fonts to build/fonts"
+  mkdir -p build/fonts
+
+	cp node_modules/font-awesome/fonts/* node_modules/bootstrap/fonts/glyphicons-halflings-regular.* build/fonts
+}
+
+function webpack {
+  echo "# Running $1 webpack"
+
+  if [ "$1" == "release" ]; then
+    NODE_ENV=production $WEBPACK --progress --colors --config webpack.config.js
+  elif [ "$1" == "watch" ]; then
+    webpack-dev-server --config webpack.config.js
+  else
+    $WEBPACK --progress --colors --config webpack.config.js
+  fi
+}
+
+function run {
+  build
+  node index.js
+}
+
+#############################################
+# DEVELOPMENT
+
+function dev {
+  html & vendor-styles & media & fonts &
+  wait
+  watch './Taskfile media' src/web/media --wait=1 -d -u &
+  webpack watch &
+	nodemon --watch api --watch lib --watch models index.js
+}
+
+#############################################
+# TOOLS
+
+function gettext {
+  if [ "$1" == "extract" ]; then
+    gulp po:extract
+  elif [ "$1" == "compile" ]; then
+	  gulp po:compile
+  else
+    echo "Warning: No action provided for .po files command"
+  fi
+}
+
+function todo {
+  notes ./src ./api ./models || echo 'Install notes with npm install -g'
+}
+
+function ssh-copy {
+  clean
+  build && scp -r ./build/* app@your.server.com:/home/user/app/build
+}
+
+#############################################
+# SERVER
+
+function start {
+  pm2 start process.yml
+}
+
+function reload {
+  pm2 reload process.yml
+}
+
+function restart {
+  pm2 restart process.yml
+}
+
+function stop {
+  pm2 stop process.yml
+}
+
+#############################################
+# INFO
+
+function default {
+  echo "$0 <task> <args>"
+  echo "Tasks:"
+  compgen -A function | cat -n
+}
+
+
+TIMEFORMAT="Task completed in %3lR"
+time ${@:-default}
