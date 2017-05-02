@@ -85,7 +85,7 @@ class Upload extends Component {
 				</div>
 				<div className="row">
 					{this.state.loading ?
-						<span>Loading...</span>
+						<div className="loading">Uploading, please wait...</div>
 						: (
 							this.state.files.length ? <div id="send-controls" className="col-md-12">
 								{!album && <input type="text" onChange={ev => this.setState({ name: ev.target.value })} ref={input => { this.textInput = input }} placeholder="Type an album name" className="text-center" />}
