@@ -73,6 +73,7 @@ function renderPage(markup, initialState) {
             opacity: 0;
           }
           </style>
+          <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
           <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
@@ -106,6 +107,7 @@ function renderPage(markup, initialState) {
           <meta property="og:url" content="${config.SOCIAL_URL}"/>
 
           <link rel="icon" href="/media/image-poster.png" type="image/png" sizes="120x120"/>
+          <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
           <link rel="stylesheet" type="text/css" href="/web.min.css"/>
 
           <script>

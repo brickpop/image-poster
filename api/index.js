@@ -5,7 +5,11 @@ const cookieParser = require('cookie-parser');
 
 const { enforceAuth } = require('../lib/session');
 
-const { getAlbums } = require('./web');
+const {
+	createAlbum,
+	addPictureToAlbum,
+	getAlbums
+} = require('./web');
 
 const {
 	// listUsers,
@@ -57,8 +61,11 @@ router.delete('/api/admin/albums/:id', [ enforceAuth, removeAlbum ]);
 // WEB
 ///////////////////////////////////////////////////////////////////////////////
 
-router.get('/api/web/login', [ oauthLogin ]);
 router.get('/api/web/albums', [ getAlbums ]);
+router.post('/api/web/albums', [ createAlbum ]);
+router.post('/api/web/albums/:id', [ addPictureToAlbum ]);
+
+router.get('/api/web/login', [ oauthLogin ]);
 
 ///////////////////////////////////////////////////////////////////////////////
 // GLOBAL

@@ -25,36 +25,23 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   overflow-y: scroll;
-	background-color: black;
 }
 
 body {
   -ms-overflow-style: -ms-autohiding-scrollbar;
   text-rendering: optimizeLegibility;
-	font-family: 'font';
-    font-weight: normal;
-    font-style: normal;
+
+	background-color: #111;
+	height: 100vh;
+	width: 100vw;
 }
 
+/* UTIL */
 
-@media (min-width: 1040px) {
-  body {
-		overflow:hidden;
-		height:100vh;
-  }
-}
-
-
-/*
-	utils
-*/
-
-.full-width {
-  width: 100%;
-}
-
-.txt-pointer{
-	cursor: pointer;
+input {
+		background-color: inherit;
+    border: none;
+    color: #ccc;
 }
 
 img {
@@ -69,18 +56,58 @@ img {
 		-ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
 }
 
-.img-responsive {width: auto\9; height: auto; max-width: 100%; }
-
-
-a{
-	text-decoration: none;
-    /*transition: all 0.5s linear;*/
+.dropzone {
+	cursor: pointer;
+	margin: 20px 0 35px;
 }
 
+.dropzone p {
+	color: #ccc;
+}
 
+.dropzone > div {
+	padding: 15px;
+	width: 100% !important;
+}
 
-/*
+.btn.btn-default {
+	border-radius: 0px;
+	border-color: #ccc;
+	background-color: inherit;
+	color: #ccc;
+}
+.btn.btn-default:hover {
+	background-color: #222;
+}
+.btn.btn-default:active {
+	color: #666;
+}
 
- layout
+/* COMPONENTS */
 
-*/
+#upload h3, #upload p {
+	color: #ccc;
+}
+
+#upload input {
+	min-width: 280px;
+	height: 40px;
+	background-color: #222;
+}
+
+#upload .btn {
+	min-width: 280px;
+}
+
+#upload img.preview {
+	max-width: 100%;
+}
+
+#upload #send-controls {
+	margin: 30px 0 60px;
+}
+
+#upload #send-controls input,
+#upload #send-controls .btn {
+	margin: 15px;
+}

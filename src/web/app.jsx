@@ -52,7 +52,8 @@ class App extends React.Component {
               <Redirect to="/upload" />
             )
           )} />
-          <Route path="/albums/:slug" component={Albums} />
+          <Route path="/albums/:slug/upload" component={Upload} />
+          <Route path="/albums/:slug" component={Album} />
           <Route path="/albums" component={Albums} />
           <Route path="/upload" exact component={Upload} />
           <Route component={NotFound} />

@@ -3,9 +3,12 @@ var mongoose = require('mongoose'),
 	ObjectId = Schema.ObjectId;
 
 var schema = new Schema({
-	name: { type: String, required: true, unique: true },
+	name: { type: String, required: true },
 	created: { type: Date, default: Date.now },
-	pictures: [{ type: String, required: true}]
+	pictures: [{
+		fileName: {type: String, required: true},
+		type: { type: String, enum: ['picture', 'video'], required: true}
+	}]
 }, {
 	collection: 'albums'
 });
