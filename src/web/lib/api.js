@@ -41,14 +41,16 @@ export function upload(params) {
 			else id = response.data.id;
 		})
 		.then(() => {
-			const req = request.post(`/api/web/albums/${id}`);
-			params.files.forEach(f => req.attach(f.name, f));
+			return Promise.map(params.files, file => {
+				const req = request.post(`/api/web/albums/${id}`);
+				req.attach(file.name, file);
 
-			return new Promise((resolve, reject) => {
-				req.end((err, res) => {
-					if(err) return reject(err);
-					else resolve(res);
-				});
+				return new Promise((resolve, reject) => {
+					req.end((err, res) => {
+						if (err) return reject(err);
+						else resolve(res);
+					});
+				})
 			})
 		})
 		.then(() => id);

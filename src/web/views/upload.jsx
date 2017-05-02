@@ -26,7 +26,7 @@ class Upload extends Component {
 
 	onDrop(files) {
 		this.setState({ files });
-		setTimeout(() => this.textInput.focus(), 200)
+		setTimeout(() => this.textInput.focus && this.textInput.focus(), 200)
 	}
 
 	onUpload(album) {
