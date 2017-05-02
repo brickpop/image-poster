@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 class Album extends Component {
 	static propTypes = {
 		app: PropTypes.object.isRequired,
-		user: PropTypes.object.isRequired,
+		// user: PropTypes.object.isRequired,
 		albums: PropTypes.array.isRequired,
 		dispatch: PropTypes.func.isRequired
 	}

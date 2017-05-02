@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import { upload } from '../lib/api';
+import { loadAlbums } from '../lib/actions';
 import { withRouter } from 'react-router-dom';
 
 @withRouter
@@ -10,8 +11,8 @@ import { withRouter } from 'react-router-dom';
 class Upload extends Component {
 	static propTypes = {
 		app: PropTypes.object.isRequired,
-		user: PropTypes.object.isRequired,
-		albums: PropTypes.array.isRequired,
+		// user: PropTypes.object.isRequired,
+		history: PropTypes.object.isRequired,
 		dispatch: PropTypes.func.isRequired
 	}
 
@@ -30,7 +31,10 @@ class Upload extends Component {
 
 		upload({name: this.state.name, files: this.state.files})
 		.then(id => {
-			// if(id) location.href = `/albums/${id}`
+			if(id) {
+				this.props.history.push(`/albums/${id}`);
+				this.props.dispatch(loadAlbums())
+			}
 		})
 		.catch(err => {
 			alert(err && err.message || err || "Unable to complete the request");
@@ -52,7 +56,7 @@ class Upload extends Component {
 				</div>
 				<div className="row">
 					{ this.state.files.map((img, i) => (
-						<div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+						<div key={i} className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 							<img className="preview" src={img.preview}/>
 						</div>
 					)) }

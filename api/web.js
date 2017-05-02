@@ -40,37 +40,47 @@ async function createAlbum(req, res) {
 async function addPictureToAlbum(req, res) {
 	if(!req.params.id) return res.send({error: "Invalid parameters"});
 
-	const album = await Album.findById(req.params.id).lean().exec();
-	if(!album) return res.send({error: "Album not found"});
+	try {
+		const album = await Album.findById(req.params.id).lean().exec();
+		if(!album) return res.send({error: "Album not found"});
 
-	const files = [];
+		const files = [];
 
-	var busboy = new Busboy({ headers: req.headers });
-	busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-		const destFileName = Date.now() + '-' + ((Math.random()+'').substr(2)) + path.extname(filename);
-		files.push(destFileName);
+		var busboy = new Busboy({ headers: req.headers });
+		busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+			const destFileName = Date.now() + '-' + ((Math.random()+'').substr(2)) + path.extname(filename);
+			files.push(destFileName);
 
-		const saveTo = path.join(config.STORAGE_FOLDER, destFileName);
-		file.pipe(fs.createWriteStream(saveTo));
-	});
-	busboy.on('finish', async function() {
-		try {
-			let updatedAlbum = await Album.findByIdAndUpdate(req.params.id, {
-				$addToSet: { pictures: { $each: files.map(f => ({fileName: f, type: 'image'})) } }
-			}, {new: true}).lean().exec();
-			res.send(updatedAlbum);
-		}
-		catch(err){
-			res.send({error: err && err.message || err || "Unable to complete the operation"});
-		}
-	});
+			const saveTo = path.join(config.STORAGE_FOLDER, destFileName);
+			file.pipe(fs.createWriteStream(saveTo));
+		});
+		busboy.on('finish', async function() {
+			try {
+				let updatedAlbum = await Album.findByIdAndUpdate(req.params.id, {
+					$addToSet: { pictures: { $each: files.map(f => ({fileName: f, type: 'image'})) } }
+				}, {new: true}).lean().exec();
+				res.send(updatedAlbum);
+			}
+			catch(err){
+				res.send({error: err && err.message || err || "Unable to complete the operation"});
+			}
+		});
 
-	return req.pipe(busboy);
+		return req.pipe(busboy);
+	}
+	catch(err){
+		res.send({error: err && err.message || err || "Unable to complete the operation"})
+	}
 }
 
 async function getAlbums(req, res) {
-	const data = await Album.find().sort('-created').populate('created').lean().exec();
-	res.send(data);
+	try {
+		const data = await Album.find().sort('-created').lean().exec();
+		res.send(data);
+	}
+	catch(err){
+		res.send({error: err && err.message || err || "Unable to complete the operation"})
+	}
 }
 
 

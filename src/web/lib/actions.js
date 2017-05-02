@@ -1,18 +1,17 @@
-// import { getEntries } from '../lib/api';
+import { getAlbums } from '../lib/api';
 
-export function loadContent() {
+export function loadAlbums() {
 	return (dispatch, getState) => {
-	// 	const state = getState();
-	// 	if(!state || !state.app) return;
+		const state = getState();
+		if(!state || !state.app) return;
 
-	// 	getEntries(....)
-	// 		.then(data => {
-	// 			if (data && data.error) return alert("oops! " + data.error);
-	// 			dispatch({ type: 'INC_DAYS_AGO' });
-	// 			dispatch({ type: 'SET', entries: data });
-	// 		})
-	// 		.catch(err => {
-	// 			alert("oops! " + (err && err.message || err));
-	// 		});
+		getAlbums()
+			.then(data => {
+				if (data && data.error) return alert("oops! " + data.error);
+				dispatch({ type: 'SET', albums: data });
+			})
+			.catch(err => {
+				alert("oops! " + (err && err.message || err));
+			});
 	}
 }

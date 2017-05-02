@@ -9,7 +9,7 @@ import Upload from './views/upload.jsx';
 import NotFound from './views/NotFound.jsx';
 
 @withRouter
-@connect(({ app, user }) => ({ app, user }))
+@connect(({ app, albums }) => ({ app, albums }))
 class App extends React.Component {
   static propTypes = {
     app: PropTypes.object.isRequired,

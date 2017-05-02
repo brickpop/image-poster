@@ -1,6 +1,7 @@
 import config from '../../config/server';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import serveStatic from 'serve-static';
 
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -15,6 +16,7 @@ const router = express.Router();
 
 // API
 router.use(cookieParser()); // The API router and the initial render need them
+router.use('/media', serveStatic(config.STORAGE_FOLDER))
 
 // RENDER THE MAIN PAGE
 router.use(decodeAuth, async (req, res) => {
