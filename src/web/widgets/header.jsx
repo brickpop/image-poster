@@ -16,8 +16,12 @@ class Header extends Component {
 	renderAlbumsHeader() {
 		return (
 			<div className="row">
-				<div className="col-md-12">
+				<div className="col-md-3"></div>
+				<div className="col-md-6">
 					<h3>Albums</h3>
+				</div>
+				<div className="col-md-3">
+					<Link to="/upload" className="btn">Upload</Link>
 				</div>
 			</div>
 		);
