@@ -20,38 +20,43 @@ class Upload extends Component {
 	}
 
 	state = {
-		files: []
+		files: [],
+		loading: false
 	}
 
-	onDrop(files){
-		this.setState({files});
+	onDrop(files) {
+		this.setState({ files });
 		setTimeout(() => this.textInput.focus(), 200)
 	}
 
-	onUpload(album){
-		if(!this.state.files.length) return alert("Please, select files to upload");
+	onUpload(album) {
+		if (!this.state.files.length) return alert("Please, select files to upload");
 
 		const name = album && album.name || this.state.name;
-		if(!name) return alert("Please, type a name for the album");
+		if (!name) return alert("Please, type a name for the album");
 
-		upload({name, files: this.state.files})
-		.then(id => {
-			if(id) {
-				this.props.history.push(`/albums/${id}`);
-				this.props.dispatch(loadAlbums())
-			}
-		})
-		.catch(err => {
-			alert(err && err.message || err || "Unable to complete the request");
-		})
+		this.setState({ loading: true });
+
+		upload({ name, files: this.state.files })
+			.then(id => {
+				this.setState({ loading: false });
+				if (id) {
+					this.props.history.push(`/albums/${id}`);
+					this.props.dispatch(loadAlbums())
+				}
+			})
+			.catch(err => {
+				this.setState({ loading: false });
+				alert(err && err.message || err || "Unable to complete the request");
+			})
 	}
 
-	renderHeader(album){
-		if(album && album._id){
-			return <Header title={album.name} leftLink={`/albums/${album._id}`}/>
+	renderHeader(album) {
+		if (album && album._id) {
+			return <Header title={album.name} leftLink={`/albums/${album._id}`} />
 		}
 		else {
-			return <Header/>;
+			return <Header />;
 		}
 	}
 
@@ -61,29 +66,34 @@ class Upload extends Component {
 
 		return (
 			<div id="upload" className="container text-center">
-				{ this.renderHeader(album) }
+				{this.renderHeader(album)}
 				<div className="row">
 					<div className="col-md-12">
 						<div className="dropzone">
 							<Dropzone accept="image/jpeg, image/png" onDrop={files => this.onDrop(files)}>
-								<p><br/><br/>Tap here or drop your images to continue.</p>
+								<p><br /><br />Tap here or drop your images to continue.</p>
 							</Dropzone>
 						</div>
 					</div>
 				</div>
 				<div className="row">
-					{ this.state.files.map((img, i) => (
+					{this.state.files.map((img, i) => (
 						<div key={i} className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-							<img className="preview" src={img.preview}/>
+							<img className="preview" src={img.preview} />
 						</div>
-					)) }
+					))}
 				</div>
 				<div className="row">
-					{ this.state.files.length ? <div id="send-controls" className="col-md-12">
-						{ !album && <input type="text" onChange={ev => this.setState({name: ev.target.value})} ref={input => { this.textInput = input }} placeholder="Type an album name" className="text-center" /> }
-						<br/>
-						<div onClick={() => this.onUpload(album)} className="btn btn-default btn-lg">Post images</div>
-					</div> : null }
+					{this.state.loading ?
+						<span>Loading...</span>
+						: (
+							this.state.files.length ? <div id="send-controls" className="col-md-12">
+								{!album && <input type="text" onChange={ev => this.setState({ name: ev.target.value })} ref={input => { this.textInput = input }} placeholder="Type an album name" className="text-center" />}
+								<br />
+								<div onClick={() => this.onUpload(album)} className="btn btn-default btn-lg">Post images</div>
+							</div> : null
+						)
+					}
 				</div>
 			</div>
 		);
