@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { dateToString } from '../../../lib/util';
 // import Media from 'react-media';
 import Columns from 'react-columns';
@@ -31,12 +32,21 @@ class Albums extends Component {
 
 						<Columns columns={3} queries={columnQueries} rootStyles={{}}>
 							{this.props.albums.map(album => (
+
 								<div className="img-container" key={album._id}>
-									<img src={`/media/${album.pictures[0].fileName}`} alt={album.name} />
+									<Link to={`/albums/${album._id}`}>
+										<img src={`/media/${album.pictures[0].fileName}`} alt={album.name} />
+									</Link>
 									<p className="album-name">
-										{album.name}
+										<Link to={`/albums/${album._id}`}>
+												{album.name}
+										</Link>
 									</p>
-									{album.created ? <p className="album-created">{dateToString(album.created)}</p> : ''}
+									<p className="album-created">
+										<Link to={`/albums/${album._id}`}>
+											{album.created ? dateToString(album.created) : ''}
+										</Link>
+									</p>
 								</div>
 							))}
 						</Columns>
