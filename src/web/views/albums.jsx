@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { dateToString } from '../../../lib/util';
 // import Media from 'react-media';
 import Columns from 'react-columns';
+import Header from '../widgets/header.jsx';
 
 const columnQueries = [{
   columns: 2,
@@ -26,7 +27,7 @@ class Albums extends Component {
 	render() {
 		return (
 			<div id="albums" className="container text-center">
-				<h3>Albums</h3>
+				<Header />
 				<div className="row">
 					<div className="col-xs-12">
 

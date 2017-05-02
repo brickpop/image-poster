@@ -5,13 +5,16 @@ import Dropzone from 'react-dropzone';
 import { upload } from '../lib/api';
 import { loadAlbums } from '../lib/actions';
 import { withRouter } from 'react-router-dom';
+import Header from '../widgets/header.jsx';
 
 @withRouter
-@connect(({ app }) => ({ app }))
+@connect(({ app, albums }) => ({ app, albums }))
 class Upload extends Component {
 	static propTypes = {
 		app: PropTypes.object.isRequired,
 		// user: PropTypes.object.isRequired,
+		albums: PropTypes.array.isRequired,
+		match: PropTypes.object.isRequired,
 		history: PropTypes.object.isRequired,
 		dispatch: PropTypes.func.isRequired
 	}
@@ -25,11 +28,13 @@ class Upload extends Component {
 		setTimeout(() => this.textInput.focus(), 200)
 	}
 
-	onUpload(){
+	onUpload(album){
 		if(!this.state.files.length) return alert("Please, select files to upload");
-		else if(!this.state.name) return alert("Please, type a name for the album");
 
-		upload({name: this.state.name, files: this.state.files})
+		const name = album && album.name || this.state.name;
+		if(!name) return alert("Please, type a name for the album");
+
+		upload({name, files: this.state.files})
 		.then(id => {
 			if(id) {
 				this.props.history.push(`/albums/${id}`);
@@ -41,10 +46,22 @@ class Upload extends Component {
 		})
 	}
 
+	renderHeader(album){
+		if(album && album._id){
+			return <Header title={album.name} leftLink={`/albums/${album._id}`}/>
+		}
+		else {
+			return <Header/>;
+		}
+	}
+
 	render() {
+		var data = this.props.albums.filter(album => album._id == this.props.match.params.slug);
+		const album = data[0];
+
 		return (
 			<div id="upload" className="container text-center">
-				<h3>Upload</h3>
+				{ this.renderHeader(album) }
 				<div className="row">
 					<div className="col-md-12">
 						<div className="dropzone">
@@ -63,9 +80,9 @@ class Upload extends Component {
 				</div>
 				<div className="row">
 					{ this.state.files.length ? <div id="send-controls" className="col-md-12">
-						<input type="text" onChange={ev => this.setState({name: ev.target.value})} ref={input => { this.textInput = input }} placeholder="Type an album name" className="text-center" />
+						{ !album && <input type="text" onChange={ev => this.setState({name: ev.target.value})} ref={input => { this.textInput = input }} placeholder="Type an album name" className="text-center" /> }
 						<br/>
-						<div onClick={() => this.onUpload()} className="btn btn-default btn-lg">Post images</div>
+						<div onClick={() => this.onUpload(album)} className="btn btn-default btn-lg">Post images</div>
 					</div> : null }
 				</div>
 			</div>

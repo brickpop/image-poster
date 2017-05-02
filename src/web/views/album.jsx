@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { dateToString } from '../../../lib/util';
+import { withRouter, Link } from 'react-router-dom';
 // import Media from 'react-media';
 import Columns from 'react-columns';
 
 import NotFound from './NotFound.jsx';
+import Header from '../widgets/header.jsx';
 
 const columnQueries = [{
   columns: 2,
@@ -35,14 +35,16 @@ class Album extends Component {
 
 		return (
 			<div id="album" className="container text-center">
-				<h3>{album.name}</h3>
+				<Header title={album.name} rightLink={`/albums/${album._id}/upload`}/>
 				<div className="row">
 					<div className="col-xs-12">
 
 						<Columns columns={3} queries={columnQueries} rootStyles={{}}>
 							{album.pictures.map(picture => (
 								<div className="img-container" key={picture._id}>
-									<img src={`/media/${picture.fileName}`} alt={album.name} />
+									<a href={`/media/${picture.fileName}`}>
+										<img src={`/media/${picture.fileName}`} alt={album.name} />
+									</a>
 								</div>
 							))}
 						</Columns>
