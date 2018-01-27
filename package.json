@@ -31,7 +31,7 @@
     "googleapis": "^19.0.0",
     "html-loader": "^0.4.5",
     "img-loader": "^2.0.0",
-    "jquery": "1.11.1",
+    "jquery": "^3.3.1",
     "jsonwebtoken": "^7.3.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
